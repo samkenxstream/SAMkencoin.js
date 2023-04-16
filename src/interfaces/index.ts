@@ -20,3 +20,6 @@ export * from "./root_block_info";
 export * from "./allowance_transaction_option";
 export * from "./approve_transaction_option";
 export * from "./exit_transaction_option";
+export * from "./zkevm_client_config";
+export * from "./zkevm_contracts";
+export * from "./bridge_transaction_option";

@@ -8,6 +8,7 @@ export * from "./types";
 export * from "./constant";
 export * from "./abstracts";
 export * from "./services";
+export * from "./zkevm";
 
 export default defaultExport;
 

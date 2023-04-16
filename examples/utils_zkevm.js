@@ -1,33 +1,29 @@
 const bn = require('bn.js')
 const HDWalletProvider = require('@truffle/hdwallet-provider')
 const config = require('./config')
-const { POSClient, setProofApi, use } = require('@maticnetwork/maticjs')
+const { ZkEvmClient, use } = require('@maticnetwork/maticjs')
 const SCALING_FACTOR = new bn(10).pow(new bn(18))
 const { Web3ClientPlugin } = require('@maticnetwork/maticjs-web3')
 
 use(Web3ClientPlugin)
 
-if (config.proofApi) {
-  setProofApi(config.proofApi)
-}
-
 const privateKey = config.user1.privateKey
 const userAddress = config.user1.address
 
-const getPOSClient = (network = 'testnet', version = 'mumbai') => {
-  const posClient = new POSClient()
-  return posClient.init({
+const getZkEvmClient = (network = 'testnet', version = 'blueberry') => {
+  const zkEvmClient = new ZkEvmClient()
+  return zkEvmClient.init({
     log: true,
     network: network,
     version: version,
     child: {
-      provider: new HDWalletProvider(privateKey, config.child.rpc),
+      provider: new HDWalletProvider(privateKey, config.rpc.zkEvm.child),
       defaultConfig: {
         from: userAddress,
       },
     },
     parent: {
-      provider: new HDWalletProvider(privateKey, config.parent.rpc),
+      provider: new HDWalletProvider(privateKey, config.rpc.zkEvm.parent),
       defaultConfig: {
         from: userAddress,
       },
@@ -37,10 +33,8 @@ const getPOSClient = (network = 'testnet', version = 'mumbai') => {
 
 module.exports = {
   SCALING_FACTOR,
-  getPOSClient: getPOSClient,
-  child: config.child,
-  plasma: config.plasma,
-  pos: config.pos,
+  getZkEvmClient: getZkEvmClient,
+  zkEvm: config.zkEvm,
   from: config.user1.address,
   privateKey: config.user1.privateKey,
   to: config.user2.address,
